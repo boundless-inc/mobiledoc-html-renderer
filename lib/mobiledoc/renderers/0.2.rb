@@ -35,8 +35,6 @@ module Mobiledoc
     end
 
     def render
-      root = create_document_fragment
-
       sections.each do |section|
         rendered = render_section(section)
 
