@@ -66,17 +66,27 @@ module Mobiledoc
       end
     end
 
-    def render(mobiledoc)
+    def get_version_renderer(mobiledoc)
       version = mobiledoc['version']
 
       case version
       when '0.2.0'
-        Renderer_0_2.new(mobiledoc, state).render
+        Renderer_0_2.new(mobiledoc, state)
       when '0.3.0', '0.3.1', nil
-        Renderer_0_3.new(mobiledoc, state).render
+        Renderer_0_3.new(mobiledoc, state)
       else
         raise Mobiledoc::Error.new(%Q[Unexpected Mobiledoc version "#{version}"])
       end
+    end
+
+    def render(mobiledoc)
+      version_renderer = get_version_renderer(mobiledoc)
+      version_renderer.render
+    end
+
+    def render_text(mobiledoc)
+      version_renderer = get_version_renderer(mobiledoc)
+      version_renderer.render_text
     end
   end
 end

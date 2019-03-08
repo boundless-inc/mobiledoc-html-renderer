@@ -34,9 +34,7 @@ module Mobiledoc
       end
     end
 
-    def render
-      root = create_document_fragment
-
+    def populate_root
       sections.each do |section|
         rendered = render_section(section)
 
@@ -44,8 +42,16 @@ module Mobiledoc
           append_child(root, rendered)
         end
       end
+    end
 
+    def render
+      populate_root
       root.to_html(save_with: 0).gsub('  ', ' &nbsp;')
+    end
+
+    def render_text
+      populate_root
+      root.children.map(&:text).join("\n")
     end
 
     def create_document_fragment
